@@ -37,9 +37,7 @@ async function onForm(evt) {
         elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
         lightbox.refresh();
         elements.btnLoadMore.hidden = false;
-        if (totalHits <= 40) {
-        hideBtn();
-    } 
+        hideBtn(page, totalHits);
     } else {
         Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
         evt.target.reset()
@@ -87,10 +85,8 @@ async function onBtnLoadMore() {
         const response = await fetchImg(searchText, page);
         const { totalHits, hits } = response;
             elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
-            lightbox.refresh();
-        if (page*40 > totalHits) {
-            hideBtn()
-        }
+        lightbox.refresh();
+        hideBtn(page, totalHits);
         scroll()
     } catch(err) {
         console.log(err)
@@ -105,8 +101,15 @@ function scroll() {
     });
 }
 
-function hideBtn() {
-    elements.btnLoadMore.hidden = true;
-    setTimeout(() => { Notiflix.Notify.info("We're sorry, but you've reached the end of search results.") }, 1200)
-    ;
+function hideBtn(page, totalHits) {
+    console.log(totalHits)
+    console.log('page', page)
+    if (page * 40 >= totalHits) {
+        console.log('totale', totalHits)
+        console.log(page*40)
+        elements.btnLoadMore.hidden = true;
+        setTimeout(() => {
+        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
+        }, 1000);
+    }
 }
