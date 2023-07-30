@@ -106,6 +106,7 @@ function scroll() {
 }
 
 function hideBtn() {
-    Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
     elements.btnLoadMore.hidden = true;
+    setTimeout(() => { Notiflix.Notify.info("We're sorry, but you've reached the end of search results.") }, 1200)
+    ;
 }
