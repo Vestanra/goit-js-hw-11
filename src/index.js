@@ -26,8 +26,8 @@ async function onForm(evt) {
     elements.gallery.innerHTML = '';
     elements.btnLoadMore.hidden = true;
     page = 1;
-
     const searchText = evt.currentTarget.elements.searchQuery.value;
+    
     try {
     const response = await fetchImg(searchText);
     const { totalHits, hits } = response;
@@ -46,10 +46,8 @@ async function onForm(evt) {
     }
 }
 
-
 async function fetchImg(text, page) {
     const response = await axios.get(`${BASE_URL}?key=${API_KEY}${END_POINT}&q=${text}&page=${page}`);
-    console.log(response)
     return response.data
 }
 
@@ -82,15 +80,26 @@ function imgMarcup(arr) {
 async function onBtnLoadMore() {
     page += 1;
     const searchText = elements.form.elements.searchQuery.value;
-    console.log(searchText, page)
-    const response = await fetchImg(searchText, page);
-    const { totalHits, hits } = response;
-        elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
-        lightbox.refresh();
-    if (page*40 > totalHits) {
-        Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
-        elements.btnLoadMore.hidden = true
+    try {
+        const response = await fetchImg(searchText, page);
+        const { totalHits, hits } = response;
+            elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
+            lightbox.refresh();
+        if (page*40 > totalHits) {
+            Notiflix.Notify.info("We're sorry, but you've reached the end of search results.");
+            elements.btnLoadMore.hidden = true
+        }
+        scroll()
+    } catch(err) {
+        console.log(err)
     }
 }
 
+function scroll() {
+    const { height: cardHeight } = elements.form.firstElementChild.getBoundingClientRect();
 
+    window.scrollBy({
+    top: cardHeight * 10,
+    behavior: "smooth",
+    });
+}
