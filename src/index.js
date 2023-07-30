@@ -27,22 +27,25 @@ async function onForm(evt) {
     elements.btnLoadMore.hidden = true;
     page = 1;
     const searchText = evt.currentTarget.elements.searchQuery.value;
-
+    if (searchText.trim().length === 0) {
+        Notiflix.Notify.warning ('Enter text to search');
+        return;
+    }
     try {
         const response = await fetchImg(searchText);
         const { totalHits, hits } = response;
-
-    if (hits.length > 0) {
-        Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
-        elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
-        lightbox.refresh();
-        elements.btnLoadMore.hidden = false;
-        hideBtn(page, totalHits);
-    } else {
-        Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
-        evt.target.reset()
-    }
-    } catch(err) {
+        
+        if (hits.length > 0) {
+            Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
+            elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
+            lightbox.refresh();
+            elements.btnLoadMore.hidden = false;
+            hideBtn(page, totalHits);
+        } else {
+            Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
+            evt.target.reset()
+         }
+    } catch (err) {
         console.log(err)
     }
 }
@@ -84,7 +87,7 @@ async function onBtnLoadMore() {
     try {
         const response = await fetchImg(searchText, page);
         const { totalHits, hits } = response;
-            elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
+        elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
         lightbox.refresh();
         hideBtn(page, totalHits);
         scroll()
