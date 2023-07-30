@@ -42,11 +42,11 @@ async function onForm(evt) {
             elements.btnLoadMore.hidden = false;
             hideBtn(page, totalHits);
         } else {
-            Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.")
-            evt.target.reset()
+            Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+            evt.target.reset();
          }
     } catch (err) {
-        console.log(err)
+        console.log(err);
     }
 }
 
@@ -90,14 +90,14 @@ async function onBtnLoadMore() {
         elements.gallery.insertAdjacentHTML("beforeend", imgMarcup(hits));
         lightbox.refresh();
         hideBtn(page, totalHits);
-        scroll()
+        scroll();
     } catch(err) {
         console.log(err)
     }
 }
 
 function scroll() {
-    const { height: cardHeight } = elements.form.firstElementChild.getBoundingClientRect();
+    const { height: cardHeight } = elements.form.getBoundingClientRect();
     window.scrollBy({
     top: cardHeight * 10,
     behavior: "smooth",
