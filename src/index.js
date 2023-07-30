@@ -29,10 +29,8 @@ async function onForm(evt) {
     const searchText = evt.currentTarget.elements.searchQuery.value;
 
     try {
-    const response = await fetchImg(searchText);
+        const response = await fetchImg(searchText);
         const { totalHits, hits } = response;
-        console.log(totalHits);
-        console.log(hits)
 
     if (hits.length > 0) {
         Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`)
