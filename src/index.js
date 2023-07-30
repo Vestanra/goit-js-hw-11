@@ -102,11 +102,7 @@ function scroll() {
 }
 
 function hideBtn(page, totalHits) {
-    console.log(totalHits)
-    console.log('page', page)
     if (page * 40 >= totalHits) {
-        console.log('totale', totalHits)
-        console.log(page*40)
         elements.btnLoadMore.hidden = true;
         setTimeout(() => {
         Notiflix.Notify.info("We're sorry, but you've reached the end of search results.")
